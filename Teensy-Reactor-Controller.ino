@@ -31,7 +31,7 @@ command(setPurge);
 // Create a Flag to tell the main loop when the StartPin interrupt has been triggered.
 boolean StartPinFlag = false;
 
-// Create a Flag to tell if autopurge is on.
+// Create a Flag to tell if AutoPurge is on.
 boolean AutoPurgeFlag = false;
 
 // Sets the trigger edge for the StartPin signal. 0 is falling, 1 is rising. I am making it
