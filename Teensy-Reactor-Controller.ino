@@ -31,9 +31,6 @@ command(setPurge);
 // Create a Flag to tell the main loop when the StartPin interrupt has been triggered.
 boolean StartPinFlag = false;
 
-// Create a Flag to tell if AutoPurge is on.
-boolean AutoPurgeFlag = false;
-
 // Sets the trigger edge for the StartPin signal. 0 is falling, 1 is rising. I am making it
 // an int instead of a define so that you can for instance have a command that changes which
 // edge the start pin triggers the interrupt on.
@@ -67,7 +64,6 @@ void setup() {
   // Register the commands created to attach running the function with receiving a starting string over USB Serial.
   // Third argument is a description to be displayed when you send the command ListCommands.
   registerCommand("SetPurge", setPurge, "Set Purge Valve State (0/1)");
-  registerCommand("SetAutoPurge", setAutoPurge, "Sets the Purve Valve to purge automatically after GC takes a sample");
 }
 
 elapsedMillis elapsed;
@@ -99,22 +95,11 @@ void loop() {
     // which assumes a globally defined elapsedMillis named elapsed, or
     // setting some pin:
     digitalWrite(TriggeredPin, HIGH);
-
-    // If AutoPurge is on and GC signal sends an interrupt, start the AutoPurge sequence.
-    if (AutoPurgeFlag) {
-      // Utilize evaluateCommand("setPurge 1")????
-      digitalWrite(PurgePin, HIGH);
-      Serial.println("Purge valve set to ON.");
-    }
   }
 
   // This example shows a way to used the elapsed time to set the TriggeredPin low after TriggeredPinDelay (ms).
   if (elapsed > TriggeredPinDelay) {
     digitalWrite(TriggeredPin, LOW);
-    if (digitalRead(PurgePin) == HIGH) {
-      digitalWrite(PurgePin, LOW);
-      Serial.println("Purge valve set to OFF.")
-    }
     elapsed =- TriggeredPinDelay;
   }
 
@@ -161,30 +146,3 @@ command(setPurge) {
   // and if the argument isn't 0 or 1, return an error.
   else Serial.println("ERROR: Purge valve state invalid (must be 0 or 1).");
 }
-
-
-command(setAutoPurge) {
-  // A quick check that the number of arguments received is correct.
-  // Does not include the command name in the number of arguments.
-  if (numArgs() != 1) {
-    Serial.println("ERROR: SetPurge expects 1 argument, received " + String(numArgs()) + ".");
-    return;
-  }
-  
-  // Create a place to put the argument into a real value.
-  int AutoPurgeState;
-
-  // Collect the first argument to the Command sent over Serial, convert to int, and put into AutoPurgeState.
-  intArg(1, &AutoPurgeState);
-
-  // Sets AutoPurgeFlag as true or false to determine whether to initialize AutoPurge sequence.
-  if (AutoPurgeState == 0) {
-    AutoPurgeFlag = false;
-    Serial.println("AutoPurge is set to OFF.")
-  }
-  else if (AutoPurgeState == 1) {
-    AutoPurgeFlag = true;
-    Serial.println("AutoPurge is set to ON.")
-  }
-}
-
