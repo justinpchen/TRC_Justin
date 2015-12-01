@@ -146,3 +146,26 @@ command(setPurge) {
   // and if the argument isn't 0 or 1, return an error.
   else Serial.println("ERROR: Purge valve state invalid (must be 0 or 1).");
 }
+
+
+command(setAutoPurge) {
+  // A quick check that the number of arguments received is correct.
+  // Does not include the command name in the number of arguments.
+  if (numArgs() != 1) {
+    Serial.println("ERROR: SetPurge expects 1 argument, received " + String(numArgs()) + ".");
+    return;
+  }
+  
+  // Create a place to put the argument into a real value.
+  int AutoPurgeState = intArg(1);
+
+  // Sets AutoPurgeFlag as true or false to determine whether to initialize AutoPurge sequence.
+  if (AutoPurgeState == 0) {
+    AutoPurgeFlag = false;
+    Serial.println("AutoPurge is set to OFF.")
+  }
+  else if (AutoPurgeState == 1) {
+    AutoPurgeFlag = true;
+    Serial.println("AutoPurge is set to ON.")
+  }
+}
