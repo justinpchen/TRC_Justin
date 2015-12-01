@@ -161,7 +161,7 @@ command(setPurge) {
   // and if the argument isn't 0 or 1, return an error.
   else Serial.println("ERROR: Purge valve state invalid (must be 0 or 1).");
 }
-<<<<<<< HEAD
+
 
 command(setAutoPurge) {
   // A quick check that the number of arguments received is correct.
@@ -187,5 +187,4 @@ command(setAutoPurge) {
     Serial.println("AutoPurge is set to ON.")
   }
 }
-=======
->>>>>>> 1fdf74254066e9e834ee2515e74e69a88fe11104
+
