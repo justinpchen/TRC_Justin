@@ -27,9 +27,13 @@
 
 // Prototypes for the commands.
 command(setPurge);
+command(setAutoPurge);
 
 // Create a Flag to tell the main loop when the StartPin interrupt has been triggered.
 boolean StartPinFlag = false;
+
+// Create a Flag to tell if AutoPurge is on.
+boolean AutoPurgeFlag = false;
 
 // Sets the trigger edge for the StartPin signal. 0 is falling, 1 is rising. I am making it
 // an int instead of a define so that you can for instance have a command that changes which
@@ -64,6 +68,7 @@ void setup() {
   // Register the commands created to attach running the function with receiving a starting string over USB Serial.
   // Third argument is a description to be displayed when you send the command ListCommands.
   registerCommand("SetPurge", setPurge, "Set Purge Valve State (0/1)");
+  registerCommand("SetAutoPurge", setAutoPurge, "Sets the Purve Valve to purge automatically after GC takes a sample");
 }
 
 elapsedMillis elapsed;
